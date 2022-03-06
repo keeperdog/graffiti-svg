@@ -1,0 +1,744 @@
+.bim,.bim *,.bim *:before,.bim *:after {
+    box-sizing: border-box
+}
+
+.bim {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #fff
+}
+
+.bim .move {
+    cursor: url('/components/images/pan.png'),auto !important
+}
+
+.bim .zoom {
+    cursor: url('/components/images/scale.png'),auto
+}
+
+.bim .rotateObj {
+    cursor: url('/components/images/orbit-1.png'),auto
+}
+
+.bim model-sub-barbim-c .rotateCamera {
+    cursor: url('/components/images/orbit-2.png'),auto
+}
+
+.bim.bim-markup {
+    background: none
+}
+
+.bim .selection {
+    position: absolute;
+    z-index: 9;
+    border: 1px solid #03c;
+    background: #000
+}
+
+.bim .loading {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    left: 0;
+    top: 0;
+    background: #ccc;
+    overflow: hidden;
+    padding: 0
+}
+
+.bim .progress {
+    display: block;
+    background: #a7fcdf;
+    height: 6px;
+    width: 0
+}
+
+.bim .modelLoading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding: 16px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 12px;
+    color: #7eb2da;
+    margin: -32px 0 0 -32px;
+    width: 64px;
+    height: 64px;
+    background: url(../images/loading-blue-64.gif) no-repeat
+}
+
+.bim .view {
+    width: 100%;
+    height: 100%
+}
+
+.bim .view canvas {
+    outline: none
+}
+
+.bim .modelBar {
+    position: absolute;
+    z-index: 20;
+    background: rgba(0,0,0,0.8);
+    left: 50%;
+    bottom: 20px;
+    transform: translate(-50%, 0)
+}
+
+@media screen and (max-width: 640px) {
+    .bim .modelBar>.bar-item {
+        display:none
+    }
+}
+
+.bim .bar-item {
+    float: left;
+    display: block;
+    width: 40px;
+    height: 40px;
+    padding: 3px;
+    margin: 5px;
+    border: 1px solid transparent;
+    color: #fff;
+    position: relative;
+    line-height: 1;
+    font-family: "bimface" !important;
+    font-size: 32px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: .2px;
+    -moz-osx-font-smoothing: grayscale;
+    background: none
+}
+
+.bim .bar-item.selected,.bim .bar-item:hover {
+    border-color: #666
+}
+
+.bim .m-fullScreen,.bim .m-miniScreen {
+    position: relative;
+    width: 20px;
+    border: none
+}
+
+.bim .m-fullScreen:hover,.bim .m-miniScreen:hover {
+    border: none
+}
+
+.bim .m-fullScreen:before,.bim .m-miniScreen:before {
+    position: relative;
+    z-index: 2;
+    color: #ccc;
+    margin: 0 -6px
+}
+
+.bim .m-fullScreen:after,.bim .m-miniScreen:after {
+    width: 17px;
+    height: 17px;
+    background: #666;
+    content: '';
+    display: block;
+    position: absolute;
+    left: 1px;
+    top: 7px;
+    border-radius: 1000px
+}
+
+.bim .mod-dwg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden
+}
+
+.bim .mod-dwg .scene {
+    position: relative
+}
+
+.bim .mod-dwg .view {
+    position: relative
+}
+
+.bim .mod-dwg .tile {
+    position: absolute;
+    width: 512px;
+    height: 512px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 2
+}
+
+.bim .mod-dwg .rect {
+    position: absolute;
+    border: 2px solid #fff;
+    z-index: 9;
+    display: none
+}
+
+.bim .selected .subBar {
+    display: block
+}
+
+.bim .subBar {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 8px;
+    left: -3px;
+    background: #333;
+    border-radius: 3px;
+    white-space: nowrap
+}
+
+.bim .subBar .bim-color {
+    display: inline-block;
+    float: none
+}
+
+.bim .subBar .sub-item {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 5px 0;
+    font-size: 16px
+}
+
+.bim .subBar .sub-item .sub-icon {
+    font-size: 20px;
+    padding: 1px;
+    font-family: "bimface";
+    font-style: normal;
+    margin: 0;
+    vertical-align: middle;
+    margin-right: 5px
+}
+
+.bim .subBar .sub-item span {
+    line-height: 18px;
+    font-size: 12px
+}
+
+.bim .bim-color span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 6px;
+    background: #ccc;
+    border: 2px solid #fff;
+    border-radius: 1000px
+}
+
+.bim .section-panel {
+    position: absolute;
+    left: 205px;
+    bottom: 100%;
+    width: 162px;
+    margin-bottom: 6px;
+    background: #333;
+    color: #fff;
+    font-size: 16px
+}
+
+.bim .section-panel .title {
+    height: 40px;
+    border: 1px solid #222222;
+    padding: 10px 10px 10px 14px;
+    font-size: 14px;
+    line-height: 20px
+}
+
+.bim .section-panel .title .bim-close {
+    float: right
+}
+
+.bim .section-panel .content {
+    padding: 0
+}
+
+.bim .section-panel .content .bar-item {
+    margin: 5px 7px
+}
+
+.bim .section-panel.bimface-section {
+    left: 162px;
+    width: 216px
+}
+
+.bim .sub-color {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 1000px;
+    border: 1px solid #c9c9c9;
+    background: #fff
+}
+
+.bim .color-panel {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    margin-bottom: 12px;
+    background: #333;
+    white-space: nowrap
+}
+
+.bim .color-panel .sub-icon {
+    margin: 12px 8px;
+    width: 20px;
+    height: 20px;
+    border: none
+}
+
+.bim .color-panel .sub-icon:hover {
+    margin: 10px 6px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #0082d6
+}
+
+.bim .markup {
+    width: 100%;
+    height: 100%
+}
+
+.bim .divide {
+    float: left;
+    width: 1px;
+    height: 30px;
+    background: #666;
+    overflow: hidden;
+    margin: 10px 5px
+}
+
+.bim .bim-ncolor {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 100px;
+    border: 2px solid #fff;
+    background: #d0021b;
+    margin: 3px
+}
+
+.bim .bim-line {
+    display: block;
+    width: 24px;
+    height: 3px;
+    margin: 15px auto;
+    border-radius: 100px;
+    background: #d0021b
+}
+
+.bim .mod-select {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    margin-bottom: 5px;
+    background: #333
+}
+
+.bim .model-select {
+    padding: 10px
+}
+
+.bim .model-select select {
+    display: block;
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    border: 1px solid #979797;
+    color: #fff;
+    padding: 0 8px;
+    background: #333;
+    outline: none
+}
+
+.bim .subBar .bar-item {
+    display: inline-block;
+    float: none
+}
+
+.bim .viewHouse {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    right: 10px;
+    top: 10px
+}
+
+.context-meun {
+    position: absolute;
+    background: #333;
+    border: 1px solid #ccc
+}
+
+.context-meun .menu-item {
+    display: block;
+    width: 80px;
+    padding: 0 10px;
+    line-height: 30px;
+    color: #fff;
+    font-size: 12px;
+    font-style: normal;
+    cursor: pointer
+}
+
+.context-meun .menu-item:hover {
+    background: #206DC4
+}
+
+.context-meun .divide {
+    width: 60px;
+    height: 1px;
+    overflow: hidden;
+    display: block;
+    background: #666;
+    float: none;
+    margin: 0 auto
+}
+
+.modelMap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: 45px
+}
+
+.modelMap .title {
+    height: 45px;
+    border-bottom: 1px solid #666;
+    padding: 10px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%
+}
+
+.modelMap .title .select {
+    width: 140px;
+    float: left;
+    color: #fff;
+    font-size: 14px;
+    position: relative
+}
+
+.modelMap .title .select.open .select-ul {
+    display: block
+}
+
+.modelMap .title .select.open .cur:after {
+    content: "\e629"
+}
+
+.modelMap .title .select .cur {
+    height: 25px;
+    border: 1px solid #979797;
+    padding: 0 24px 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 25px;
+    position: relative
+}
+
+.modelMap .title .select .cur:after {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    right: 0;
+    top: 0;
+    content: "\e628";
+    display: block;
+    font-family: 'bimface'
+}
+
+.modelMap .title .select .select-ul {
+    display: none;
+    position: absolute;
+    width: 100%;
+    max-height: 180px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    background: rgba(34,34,34,0.8);
+    border: 1px solid #979797;
+    left: 0;
+    top: 100%;
+    margin-top: -1px
+}
+
+.modelMap .title .select .select-ul li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 10px
+}
+
+.modelMap .title .select .select-ul li:hover {
+    background: #206DC4
+}
+
+.modelMap .title .bim-close {
+    color: #fff;
+    float: right;
+    margin: 4px 0;
+    cursor: pointer
+}
+
+.modelMap {
+    position: relative;
+    width: 100%;
+    height: 100%
+}
+
+.modelMap .map {
+    width: 100%;
+    height: 100%
+}
+
+.model-tools {
+    position: absolute;
+    z-index: 9;
+    left: 50%;
+    bottom: 10px;
+    transform: translate(-50%, 0);
+    background: rgba(0,0,0,0.8);
+    line-height: 1
+}
+
+.model-tools .model-more {
+    position: relative;
+    float: left
+}
+
+.model-tools .model-more.selected .model-item {
+    border-color: #666
+}
+
+.model-tools .subBar-item,.model-tools .model-item {
+    display: block;
+    float: left;
+    width: 40px;
+    height: 40px;
+    padding: 3px;
+    margin: 5px;
+    font-family: 'bimface';
+    font-style: normal;
+    font-size: 32px;
+    color: #fff;
+    border: 1px solid transparent;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: .2px;
+    -moz-osx-font-smoothing: grayscale
+}
+
+.model-tools .subBar-item:hover,.model-tools .model-item:hover {
+    border-color: #666
+}
+
+.model-tools .subBar-item.selected,.model-tools .model-item.selected {
+    border-color: #666
+}
+
+.model-tools .divide {
+    width: 1px;
+    margin: 10px 5px;
+    height: 30px;
+    float: left;
+    background: #666
+}
+
+.model-tools .bim-color .color {
+    width: 20px;
+    height: 20px;
+    margin: 6px;
+    background: #fff;
+    display: block;
+    float: left;
+    border-radius: 100px;
+    border: 2px solid #fff
+}
+
+.model-tools .model-sub-bar {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 5px;
+    background: rgba(0,0,0,0.8);
+    white-space: nowrap;
+    width: 300px;
+    z-index: 9
+}
+
+.model-tools .model-sub-bar.panel {
+    width: 150px;
+    z-index: 8
+}
+
+.model-tools .model-sub-bar .subBar-color {
+    display: block;
+    float: left;
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+    margin: 5px;
+    border: 1px solid transparent
+}
+
+.model-tools .model-sub-bar .subBar-color:hover {
+    border-color: #666
+}
+
+.model-tools .model-sub-bar .subBar-color .color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 6px;
+    border: 2px solid #fff;
+    border-radius: 1000px
+}
+
+.model-tools .selected .model-sub-bar {
+    display: block
+}
+
+.model-tools .section-panel {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    width: 162px;
+    margin-bottom: 6px;
+    background: #333;
+    color: #fff;
+    font-size: 16px
+}
+
+.model-tools .section-panel .title {
+    height: 40px;
+    border: 1px solid #222222;
+    padding: 10px 10px 10px 14px;
+    font-size: 14px;
+    line-height: 20px
+}
+
+.model-tools .section-panel .title .bim-close {
+    float: right
+}
+
+.model-tools .section-panel .content {
+    padding: 0
+}
+
+.model-tools .section-panel .content .bar-item {
+    margin: 5px 7px
+}
+
+.model-tools .section-panel.bimface-section {
+    left: 162px;
+    width: 216px
+}
+
+.modelSelect {
+    float: left;
+    margin: 5px;
+    position: relative;
+    color: #fff
+}
+
+.modelSelect .cur {
+    cursor: pointer;
+    display: block;
+    width: 100px;
+    height: 40px;
+    line-height: 38px;
+    padding: 0 20px 0 5px;
+    border: 1px solid #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.modelSelect .cur:after {
+    content: '';
+    position: absolute;
+    display: block;
+    border-top: 6px solid #fff;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    right: 5px;
+    top: 17px;
+    transition: all .5s
+}
+
+.modelSelect .cur.open:after {
+    transform: rotate(-180deg)
+}
+
+.modelSelect .modelList {
+    display: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    bottom: 100%;
+    background: #333;
+    border: 1px solid #666;
+    border-bottom: none
+}
+
+.modelSelect .open+.modelList {
+    display: block
+}
+
+.modelSelect .modelItem {
+    height: 30px;
+    line-height: 28px;
+    padding: 0 5px;
+    cursor: pointer;
+    list-style: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.expired {
+    text-align: center;
+    color: #f30;
+    padding: 20px
+}
+
+.objectInfo {
+    position: absolute;
+    background: rgba(255,255,255,0.8);
+    font-size: 14px
+}
+
+.objectInfo table {
+    border-collapse: collapse;
+    border: 1px solid #ccc
+}
+
+.objectInfo table .noPadding {
+    padding: 0;
+    border: none
+}
+
+.objectInfo table td {
+    padding: 5px;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc
+}
+
+.objectInfo table table {
+    width: 100%;
+    border: none
+}
