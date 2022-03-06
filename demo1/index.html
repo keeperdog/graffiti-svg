@@ -94,10 +94,14 @@
         <button onclick="touchDrawRevoke()">撤销</button>
         <!-- 恢复 -->
         <button onclick="touchDrawRecovery()">恢复</button>
+        <!-- 删除 -->
+        <button onclick="touchDrawDelete()">删除</button>
         <!-- 编辑开关 -->
         <button onclick="touchDrawEdit()" id="op-edit">禁止编辑</button>
         <!-- 输出笔画数据 -->
         <button onclick="touchDrawLog()">输出笔画数据</button>
+        <!-- 输出当前数据 -->
+        <button onclick="touchCurrentDrawLog()">输出当前数据</button>
       </div>
       <div style="margin-top: 20px;">
         <!-- 笔画颜色 -->
@@ -220,6 +224,11 @@
       // 恢复
       svg_db.recovery()
     }
+    // 删除笔画
+    function touchDrawDelete () {
+      // 恢复
+      svg_db.delete()
+    }
     // 编辑状态
     function touchDrawEdit () {
       // 切换状态
@@ -231,6 +240,10 @@
     function touchDrawLog () {
       // 当前画板笔画数据，可以上传记录改数据，下次通过方法 setStrokes() 进行复原
       console.log(svg_db.strokes)
+    }
+    // 输出当前数据
+    function touchCurrentDrawLog () {
+      console.log(svg_db.editStroke)
     }
     // 设置画笔类型
     function setStrokeType (type) {

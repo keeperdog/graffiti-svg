@@ -347,6 +347,68 @@ var svg_db = {
       this.drawEditChange(stroke);
     }
   },
+  // 删除笔画
+  delete() {
+    // 是否禁止编辑
+    if (!this.option.isEdit) {
+      return;
+    }
+    // 笔画对象
+    // var revokeStroke = this.revokeStrokes[lastIndex];
+    var revokeStroke = this.editStroke;
+    if (!revokeStroke) {
+      return;
+    }
+    // 清理辅助组件
+    this.clearComponents();
+    // 有撤销列表
+    if (this.revokeStrokes.length) {
+      // 索引
+      var revokeCount = this.revokeStrokes.length;
+      var count = this.strokes.length;
+      var lastIndex = revokeCount - 1;
+      // // 笔画对象
+      // var revokeStroke = this.revokeStrokes[lastIndex];
+      // 获取当前显示数据
+      var stroke = null;
+      var strokeIndex = null;
+      this.strokes.some((item, index) => {
+        if (item.id === revokeStroke.id) {
+          stroke = this.copy(item);
+          strokeIndex = index;
+          return true;
+        }
+        return false;
+      });
+      // 相等表示所有笔画都只剩下最后一笔画数据了
+      if (revokeCount === count) {
+        // 移除撤销列表
+        this.revokeStrokes.splice(lastIndex, 1);
+        // 移除笔画对象
+        this.strokes.splice(strokeIndex, 1);
+        // 移除页面显示
+        this.svgEl.removeChild(this.strokeEls[strokeIndex]);
+        // 移除笔画元素
+        this.strokeEls.splice(strokeIndex, 1);
+        // 添加到恢复列表
+        this.recoveryStrokes.push(stroke);
+      } else {
+        // 获取元素
+        var strokeEl = this.strokeEls.find(
+          (item) => item.getAttribute("id") === revokeStroke.id
+        );
+        // 移除撤销列表
+        this.revokeStrokes.splice(lastIndex, 1);
+        // 替换到笔画列表
+        this.strokes[strokeIndex] = revokeStroke;
+        // 重新刷新
+        this.drawChange(revokeStroke, strokeEl);
+        // 添加到恢复列表
+        this.recoveryStrokes.push(stroke);
+      }
+    }
+  },
+
   // 撤销笔画
   revoke() {
     // 是否禁止编辑
