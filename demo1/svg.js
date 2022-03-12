@@ -1,4 +1,4 @@
-// 作者：dengzemiao 2021-11-23
+// lastUpdated: Evan.Yan 2022-03-12 添加云线图
 
 // 命名空间
 var NS_SVG = "http://www.w3.org/2000/svg";
@@ -102,7 +102,7 @@ var svg_db = {
     // 配置对象,配置对象支持为每个笔画类型进行单独配置,只需要在切换时修改即可
     this.option = {
       // 当前画笔类型
-      // ['rect(矩形)', 'line(直线)', 'circle(圆形)' 'ellipse(椭圆)', 'text(文本)', 'brush(画笔)',  'arrow(箭头)']
+      // ['cloudline(云线)', 'rect(矩形)', 'line(直线)', 'circle(圆形)' 'ellipse(椭圆)', 'text(文本)', 'brush(画笔)',  'arrow(箭头)']
       strokeType: option.strokeType,
       // 画笔颜色
       strokeColor: option.strokeColor || "#F13E48",
@@ -886,7 +886,7 @@ var svg_db = {
             maxy += offsetY;
           }
         } else {
-          // rect
+          // rect, cloudline
           minx += offsetX;
           miny += offsetY;
           maxx += offsetX;
@@ -1070,7 +1070,9 @@ var svg_db = {
     var y = e.offsetY / svgSize.height;
     // 判断绘制类型
     if (
-      ["rect", "line", "circle", "ellipse"].includes(this.option.strokeType)
+      ["cloudline", "rect", "line", "circle", "ellipse"].includes(
+        this.option.strokeType
+      )
     ) {
       // 多种笔画类型
       stroke = {
@@ -1143,7 +1145,7 @@ var svg_db = {
     var svgSize = this.svgSize();
     // 判断绘制类型
     if (
-      ["rect", "line", "circle", "ellipse", "arrow"].includes(
+      ["cloudline", "rect", "line", "circle", "ellipse", "arrow"].includes(
         this.option.strokeType
       )
     ) {
@@ -1166,7 +1168,10 @@ var svg_db = {
     // 笔画对象
     var strokeEl = null;
     // 判断绘制类型
-    if (stroke.type === "rect") {
+    if (stroke.type === "cloudline") {
+      // 云线
+      strokeEl = document.createElementNS(NS_SVG, "path");
+    } else if (stroke.type === "rect") {
       // 矩形
       strokeEl = document.createElementNS(NS_SVG, stroke.type);
     } else if (stroke.type === "line") {
@@ -1265,7 +1270,15 @@ var svg_db = {
     strokeEl.setAttribute("stroke-width", stroke.strokeWidth);
     strokeEl.setAttribute("fill", stroke.fill);
     // 判断绘制类型
-    if (stroke.type === "rect") {
+    if (stroke.type === "cloudline") {
+      // 云线
+      const startX = Math.min(minx, maxx);
+      const startY = Math.min(maxx, maxy);
+      var width = Math.abs(minx - maxx);
+      var height = Math.abs(miny - maxy);
+      const path = this.generatePathForCloudLine(startX, startY, width, height);
+      strokeEl.setAttribute("d", path);
+    } else if (stroke.type === "rect") {
       // 矩形
       var x = Math.min(minx, maxx);
       var y = Math.min(miny, maxy);
@@ -1411,7 +1424,9 @@ var svg_db = {
     // 引用
     var that = this;
     // 根据类型绘制
-    if (["rect", "circle", "ellipse"].includes(this.editStroke.type)) {
+    if (
+      ["cloudline", "rect", "circle", "ellipse"].includes(this.editStroke.type)
+    ) {
       // 8/4 个操作点
       this.editEls.circle1 = document.createElementNS(NS_SVG, "circle");
       this.editEls.circle2 = document.createElementNS(NS_SVG, "circle");
@@ -1599,7 +1614,7 @@ var svg_db = {
       this.editEls.circle8.style.cursor = "ns-resize";
     }
     // 8/4 个操作点鼠标样式
-    if (["rect", "circle", "ellipse"].includes(stroke.type)) {
+    if (["cloudline", "rect", "circle", "ellipse"].includes(stroke.type)) {
       // 最小x > 最大x
       if (minx > maxx) {
         if (miny > maxy) {
@@ -2257,6 +2272,52 @@ var svg_db = {
     }
     // 返回空对象
     return {};
+  },
+
+  generatePathForCloudLine(startX, startY, width, height) {
+    // Try path here: https://yqnn.github.io/svg-path-editor/
+    //  A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+    //  a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
+    // large-arc-flag should be always 0
+    // sweep-flag should be 0 in this case
+    const arcSize = 30; // 圆弧两端点间距
+    const factor = 1.8; // 该值越小，弧约平滑。取值区间: [2, 0)
+    const rx = arcSize / factor; // radius x，弧线 x 方向半径
+    const ry = arcSize / factor; // radius y，弧线 y 方向半径
+
+    let path = `M ${startX} ${startY}`;
+
+    const appendArc = (dx, dy) => {
+      path += ` a ${rx} ${ry} 0 0 0 ${dx} ${dy}`;
+    };
+
+    let numOfArcsX = Math.round(width / arcSize); // 横线圆弧个数
+    let numOfArcsY = Math.round(height / arcSize); // 竖线圆弧个数
+    if (numOfArcsX < 1) {
+      numOfArcsX = 1;
+    }
+    if (numOfArcsY < 1) {
+      numOfArcsY = 1;
+    }
+    const deltaX = width / numOfArcsX;
+    const deltaY = height / numOfArcsY;
+    // 顶部横线
+    for (let i = 0; i < numOfArcsX; ++i) {
+      appendArc(deltaX, 0);
+    }
+    // 右侧竖线
+    for (let i = 0; i < numOfArcsY; ++i) {
+      appendArc(0, -deltaY);
+    }
+    // 底部横线
+    for (let i = numOfArcsX - 1; i >= 0; --i) {
+      appendArc(-deltaX, 0);
+    }
+    // 左侧竖线
+    for (let i = numOfArcsY - 1; i >= 0; --i) {
+      appendArc(0, deltaY);
+    }
+    return path;
   },
 };
 
